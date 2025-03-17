@@ -43,6 +43,20 @@ if ($env:GGML_VULKAN -eq 1) {
     $extraCmakeArgs += "-DGGML_VULKAN=ON"
 }
 
+if ($env:GGML_HIP -eq 1) {
+    Write-Host "HIP enabled, including in build"
+
+    $extraCmakeArgs += "-DGGML_HIP=ON"
+
+    if ($env:AMDGPU_TARGETS) {
+        $extraCmakeArgs += @(
+            "-DAMDGPU_TARGETS=gfx$env:AMDGPU_TARGETS",
+            "-DCMAKE_C_COMPILER=clang",
+            "-DCMAKE_CXX_COMPILER=clang++"
+        )
+    }
+}
+
 cmake . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release $extraCmakeArgs
 cmake --build build --config Release --target deno_cpp_binding -j $jobs
 Copy-Item build/*.dll ../lib
