@@ -50,11 +50,18 @@ if ($env:GGML_HIP -eq 1) {
 
     if ($env:AMDGPU_TARGETS) {
         $extraCmakeArgs += @(
-            "-DAMDGPU_TARGETS=gfx$env:AMDGPU_TARGETS",
-            "-DCMAKE_C_COMPILER=C:\Program Files\AMD\ROCm\6.2\bin\clang.exe",
-            "-DCMAKE_CXX_COMPILER=C:\Program Files\AMD\ROCm\6.2\bin\clang++.exe"
+            "-DAMDGPU_TARGETS=gfx$env:AMDGPU_TARGETS"
         )
     }
+
+    if ($env:ROCM_CLANG) {
+        $extraCmakeArgs += "-DCMAKE_C_COMPILER=$env:ROCM_CLANG"
+    }
+
+    if ($env:ROCM_CLANGXX) {
+        $extraCmakeArgs += "-DCMAKE_CXX_COMPILER=$env:ROCM_CLANGXX"
+    }
+
 }
 
 cmake . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release $extraCmakeArgs
