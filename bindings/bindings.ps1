@@ -51,8 +51,8 @@ if ($env:GGML_HIP -eq 1) {
     if ($env:AMDGPU_TARGETS) {
         $extraCmakeArgs += @(
             "-DAMDGPU_TARGETS=gfx$env:AMDGPU_TARGETS",
-            "-DCMAKE_C_COMPILER=clang",
-            "-DCMAKE_CXX_COMPILER=clang++"
+            "-DCMAKE_C_COMPILER=C:\Program Files\AMD\ROCm\6.2\bin\clang.exe",
+            "-DCMAKE_CXX_COMPILER=C:\Program Files\AMD\ROCm\6.2\bin\clang++.exe"
         )
     }
 }
